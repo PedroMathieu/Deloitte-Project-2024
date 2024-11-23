@@ -60,11 +60,15 @@ class LoaderDOCX(LoaderBase):
         if not text:
             return []
         
-        # Split text into paragraphs
-        paragraphs = text.split("\n\n")
+        # Split text into paragraphs by single newline
+        paragraphs = text.split("\n\n")  # Split by single newline for paragraphs
+        
+        # Remove any empty or whitespace-only paragraphs
         paragraphs = [p.strip() for p in paragraphs if p.strip()]
+        #text_for_splitter = "\n\n".join(paragraphs)
         
         return paragraphs
+
 
     def extract_image_chunks(self):
         """Extract text from images in the .docx file and chunk them into paragraphs."""
