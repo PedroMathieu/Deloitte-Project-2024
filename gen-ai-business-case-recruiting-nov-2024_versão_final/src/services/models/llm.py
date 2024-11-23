@@ -40,8 +40,27 @@ class LLM():
         Returns:
             str: The LLM's generated response.
         """
-        #XXX: NOT IMPLEMENTED. Use self.client.chat.completions to create the chatbot response
+        # Construct the prompt
+        messages = []
+        # Append previous conversation to the messages
+        for message in history:
+            role = message['role']
+            content = message['content']
+            messages.append({"role": role, "content": content})
 
-        #TODO (EXTRA: stream LLM response)
+        # Add the context and user input
+        messages.append({"role": "system", "content": f"Context: {context}"})
+        messages.append({"role": "user", "content": user_input})
 
-        return "<AI RESPONSE PLACEHOLDER>"
+        # Use the correct Azure OpenAI method to generate completions
+        response = self.client.Completion.create(
+            model=self.model_name,
+            messages=messages,
+            temperature=0.7,  # You can adjust this as needed
+            max_tokens=150  # You can adjust the token limit as needed
+        )
+        
+        # Access the response content properly
+        ai_response = response['choices'][0]['message']['content'].strip()
+
+        return ai_response

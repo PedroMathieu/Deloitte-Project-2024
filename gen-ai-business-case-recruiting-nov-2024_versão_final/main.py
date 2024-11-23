@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 import time
 
-def rag_chatbot(llm: LLM, input_text:str, history: list, index: FAISSIndex):
+def rag_chatbot(llm: LLM, input_text: str, history: list, index: FAISSIndex):
     """Retrieves relevant information from the FAISS index, generates a response using the LLM, and manages the conversation history.
 
     Args:
@@ -23,14 +23,29 @@ def rag_chatbot(llm: LLM, input_text:str, history: list, index: FAISSIndex):
     Returns:
         tuple: A tuple containing the AI's response and the updated conversation history.
     """
-
-    #TODO Retrieve context from the FAISS Index
     
-    #TODO Pass retrieve context to the LLM as well as history
-
-    #TODO History management: add user query and response to history
+    # Step 1: Retrieve relevant context from the FAISS index
+    relevant_contexts = index.retrieve_chunks(input_text, num_chunks=3)  # Retrieve top 3 relevant chunks based on input_text
     
-    return "_AI Response Placeholder_", history
+    # Step 2: Prepare the prompt for the LLM
+    # Combine history, context, and user input to create a complete prompt
+    context = "\n".join(relevant_contexts)
+    
+    # Format the conversation history into a string
+    conversation_history = ""
+    for message in history:
+        conversation_history += f"{message['role'].capitalize()}: {message['content']}\n"
+    
+    # Combine the history, context, and user input
+    prompt = f"{conversation_history}Context: {context}\nUser: {input_text}\nAssistant:"
+    
+    # Step 3: Get response from the LLM
+    ai_response = llm.get_response(history, context, input_text)
+    
+    # Step 4: Update the conversation history
+    updated_history = history + [{"role": "user", "content": input_text}, {"role": "assistant", "content": ai_response}]
+    
+    return ai_response, updated_history
 
 
 def main():
