@@ -62,3 +62,19 @@ class Loader:
             str: The extracted text from the file.
         """
         return self.loader.extract_text()
+    
+    def extract_chunks(self):
+        """Extracts text from the file using the specific loader.
+
+        Returns:
+            str: The extracted text from the file.
+        """
+        return self.loader.extract_chunks()
+    
+    def extract_image_chunks(self):
+        """Extracts text from the file using the specific loader.
+
+        Returns:
+            str: The extracted text from the file.
+        """
+        return self.loader.extract_image_chunks()

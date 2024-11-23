@@ -34,9 +34,20 @@ def chatbot_wrapper(input_text, history):
     if history is None:
         history = []
 
-    _, updated_history = rag_chatbot(llm, input_text, history[:-1], index) # Call the main chatbot function with previous history.
+    # Step 1: Add the user input to the conversation history
+    history.append({"role": "user", "content": input_text})
 
-    return updated_history, ""  # Return updated history and empty string.
+    # Step 2: Call the RAG chatbot function to get the response from the model
+    response, updated_history = rag_chatbot(llm, input_text, history, index)  # Assuming rag_chatbot updates history
+    
+    # Step 3: Add the bot response to the history
+    updated_history.append({"role": "ai", "content": response})
+    
+    # Step 4: Create a placeholder string with the entire conversation
+    conversation_placeholder = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in updated_history])
+
+    # Step 5: Return the updated conversation history and the conversation placeholder string
+    return updated_history, conversation_placeholder
 
 
 def add_user_text(history, txt):

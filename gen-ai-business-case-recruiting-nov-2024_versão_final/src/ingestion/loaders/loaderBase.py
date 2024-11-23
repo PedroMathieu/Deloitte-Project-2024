@@ -42,3 +42,24 @@ class LoaderBase(ABC):
             str: The extracted text from the file.
         """
         pass
+
+    @abstractmethod
+    def extract_chunks(self):
+        """
+        Abstract method to extract text content from a file.
+
+        Returns:
+            str: The extracted text from the file.
+        """
+        pass
+
+    
+    @abstractmethod
+    def extract_image_chunks(self):
+        """
+        Abstract method to extract text content from a file.
+
+        Returns:
+            str: The extracted text from the file.
+        """
+        pass
