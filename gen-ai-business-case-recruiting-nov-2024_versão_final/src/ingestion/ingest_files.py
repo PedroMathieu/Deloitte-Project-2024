@@ -15,22 +15,10 @@ def ingest_files_data_folder(index: FAISSIndex):
         loader = Loader(extension=file.split(".")[-1], filepath=os.path.join(DATA_FOLDER, file))
         
         # Extract text, metadata, and chunks
-        text = loader.extract_text()
-        metadata = loader.extract_metadata()
-        chunks = loader.extract_chunks()  # Ensure the method is being called here
-
+        full_text= loader.extract_text()
         print(f"\nIngesting {file}")
-        
-        # Test the chunking: Print the first few chunks
-        print(f"Extracted Chunks for {file}:")
-        for idx, chunk in enumerate(chunks[:5]):  # Print first 5 chunks for review
-            print(f"Chunk {idx + 1}: {chunk[:100]}...")  # Print the first 100 characters
-
-        # Optionally, you can ingest the chunks instead of the full text
-        # If you prefer to ingest chunks, you can modify the following line
-        # index.ingest_text(text=text)  # Ingest full text
-        for chunk in chunks:
-            index.ingest_text(text=chunk)  # Ingest each chunk separately for testing chunking
+        print(full_text)
+        index.ingest_text(text=full_text)
 
 if __name__ == "__main__":
     from dotenv import load_dotenv

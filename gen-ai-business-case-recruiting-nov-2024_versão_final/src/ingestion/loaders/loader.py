@@ -2,6 +2,8 @@ from src.ingestion.loaders.loaderBase import LoaderBase
 from src.ingestion.loaders.loaderDOCX import LoaderDOCX
 from src.ingestion.loaders.loaderHTML import LoaderHTML
 from src.ingestion.loaders.loaderPDF import LoaderPDF
+from src.ingestion.loaders.loaderCSV import LoaderCSV
+
 
 class Loader:
     """
@@ -44,6 +46,8 @@ class Loader:
                 return LoaderHTML(self.filepath)
             case "docx":
                 return LoaderDOCX(self.filepath)
+            case "csv":
+                return LoaderCSV(self.filepath)
             case _:
                 raise ValueError(f"Not a supported extension: {self.extension}")
 
@@ -63,18 +67,6 @@ class Loader:
         """
         return self.loader.extract_text()
     
-    def extract_chunks(self):
-        """Extracts text from the file using the specific loader.
 
-        Returns:
-            str: The extracted text from the file.
-        """
-        return self.loader.extract_chunks()
     
-    def extract_image_chunks(self):
-        """Extracts text from the file using the specific loader.
 
-        Returns:
-            str: The extracted text from the file.
-        """
-        return self.loader.extract_image_chunks()
